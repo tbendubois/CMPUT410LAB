@@ -1,19 +1,31 @@
 import socket
 
-def getSocket():
-    aSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    return aSocket
+def clientHandle(sock):
+    message = str(sock.recv(1024))
+    reply = message[:-2] + " Ben\n"
+    sock.sendall(reply.encode("UTF-8"))
+    sock.close()    
+
+def main():
+    host=''
+    port = 8888 
+    try:
+        mySock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        mySock.bind((host, port))
+        mySock.listen(5)
+        while(1):
+                (clientSocket, address) = mySock.accept()
+                clientHandle(clientSocket)        
+    except socket.error as msg:
+        print("failed to bind.")
+        print("error code: "+str(msg[0])+", error msg: "+msg[1])        
+        
+    finally:
+        mySock.close()    
 
 if __name__ == "__main__":
-    mySock = getSocket()
-    mySock.bind((socket.gethostname(), 8080))
-    mySock.listen(5)
-    
-    while(1):
-        (clientSocket, address) = mySock.accept()
+    main()
         
-        ct = client_thread(clientSocket)
-        ct.run()
     
 #    HOST, PORT = "localhost", 8080
 #    SocketServer.TCPServer.allow_reuse_address = True
