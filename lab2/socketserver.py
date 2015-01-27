@@ -1,4 +1,5 @@
 import socket
+import thread
 
 def clientHandle(sock):
     message = str(sock.recv(1024))
@@ -15,7 +16,7 @@ def main():
         mySock.listen(5)
         while(1):
                 (clientSocket, address) = mySock.accept()
-                clientHandle(clientSocket)        
+                thread.start_new_thread(clientHandle, (clientSocket, ))       
     except socket.error as msg:
         print("failed to bind.")
         print("error code: "+str(msg[0])+", error msg: "+msg[1])        

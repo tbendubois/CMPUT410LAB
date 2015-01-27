@@ -2,18 +2,23 @@ import socket
 import sys
 try: 
     s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-except:
+except socket.error as msg:
     print("failed")
     print("error code: "+str(msg[0])+", error msg: "+msg[1])
     exit(0)
 print("success")
-host="www.google.com"
-port = 80
+host=''
+port = 8888
 try:
-    remote_ip = socket.gethostbyname(host)
-except socket.gaierror:
-    print("host name not found")
+    s.bind((host, port))
+except socket.error as msg:
+    print("bind failed error code: "+str(msg[0])+", error msg: "+msg[1])
     exit(0)
-print("ip address of "+host+" is: "+remote_ip)
-s.connect((remote_ip, port))
-print("Socket connected to "+host+" on ip: "+remote_ip)
+
+s.listen(2)
+print("now lisning")
+conn, addr = s.accept()
+print("Client at: "+addr[0]+";"+str(addr[1]))
+message = conn.recv(1024)
+message = message + "Hello"
+conn.sendall(message.encode("UTF-8"))
