@@ -60,7 +60,7 @@ def task():
 	<body>
 	<style type="text/css">
 	span { background-color: #ffffff }
-	body { background-color: #992CB7 }
+	body { background-color: #762CB7 }
 	</style>
 	<span class="white">
 	<form action = "" method = post>
