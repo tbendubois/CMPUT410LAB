@@ -55,9 +55,12 @@ def get_tasks():
 	return t
 
 def removetask(ident):
-	q = "DELETE FROM task WHERE id=?"
-	query_db(q, (int(ident)))
+	q = "DELETE FROM task WHERE id=" + ident
+	cur = get_conn().cursor()
+	cur.execute(q)
+	cur.close()
 	get_conn().commit()
+	return 1
 
 @app.route('/')
 def hello_world():
@@ -106,6 +109,8 @@ def delete():
 	if not session.get("logged_in"):
 		abort(401)
 	removetask(request.form["ident"])
+	flash("Wow, you deleted a task. Good job.")
+	return redirect(url_for("task"))
 	
 if __name__ == "__main__":
 	app.run()
