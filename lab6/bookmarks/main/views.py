@@ -23,7 +23,7 @@ def tags(request):
 	#Get tags
 	tags = Tag.objects.all()
 
-	return render_to_response('main/index.html', {'tags': tags}, context)
+	return render_to_response('main/tags.html', {'tags': tags}, context)
 
 def tag(request, tag_name):
 	context = RequestContext(request)

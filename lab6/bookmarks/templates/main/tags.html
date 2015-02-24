@@ -6,8 +6,8 @@
         <link href='http://fonts.googleapis.com/css?family=Amarante' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Frijole' type="text/css" />
         <link rel="stylesheet" href="{% static 'css/style.css' %}" media="all" />
-        <script src="{%static 'js/jquery-1.11.0.min.js' %}"></script>
-        <script src="{%static  'js/script.js' %}"></script>
+        <script src="{% static 'js/jquery-1.11.0.min.js' %}"></script>
+        <script src="{% static 'js/script.js' %}"></script>
     </head>
     <body>
         <div id="wrapper">
@@ -17,27 +17,22 @@
             <div id="main">
                 <div id="sidebar">
                     <ul>
-                        <li class="active" id="home">
+                        <li id="home">
                             <a href="/bookmarks">My Links</a>
-			    {% if tag_name %}
-				{{ tag_name }}
-			    {% endif %}
+                            {% if tag_name %}
+                                {{ tag_name }}
+                            {% endif %}
                         </li>
                         <li><a href="javascript:;" id="addLink">Add a link</a></li>
-                        <li><a href="/bookmarks/tags">Tags</a></li>
+                        <li class="active"><a href="/bookmarks/tags">Tags</a></li>
                     </ul>
-                </div><!--
-                --><div id="content">
-		    {% for link in links %}
-                    <div class="link">
-                        <h4><a href="{{ link.url }}">{{ link.title }}</a></h4>
-                        <p class="tags">
-			    {% for tag in link.tags.all %}
-	                            <a href="/bookmarks/tags/{{ tag.name }}/">{{ tag.name }}</a>
-			    {% endfor %}
-                        </p>
-                    </div>
-		{% endfor %}
+                </div>
+                <div id="content">
+                    {% for tag in tags %}
+                        <div class="link">
+                            <h4><a href="/bookmarks/tags/{{ tag.name }}/">{{ tag.name }}</a></h4>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -45,7 +40,7 @@
         <div class="popBackground">&nbsp;</div>
         <div class="popWindow">
             <form id="addForm" method="POST" action="/bookmarks/add_link/">
-		{% csrf_token %}
+                {% csrf_token %}
                 <div class="winHead">
                     <h2>Add a link</h2>
                 </div>
