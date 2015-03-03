@@ -3,8 +3,7 @@ from django.shortcuts import render_to_response
 from django.shortcuts import redirect
 from django.template import RequestContext
 
-from main.models import Link
-from main.models import Tag
+from main.models import Link, Tag
 
 # Create your views here.
 
@@ -38,4 +37,18 @@ def add_link(request):
 		tags = request.POST.get("tags","")
 		title = request.POST.get("title", "")
 		#Code here
+		
+		link = Link()
+		link.url = url
+		link.title = title
+		link.save()
+		
+		for each in tags.split(','):
+			the_tag = each.strip()
+		try:
+			link.tags.add(Tag.objects.get(name=the_tag))
+		except:
+			pass		
+			
+		link.save()
 	return redirect(index)
